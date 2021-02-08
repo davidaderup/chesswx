@@ -7,7 +7,7 @@ class King(Piece):
         self.id = id
         self.owner = owner
         self.position = np.array([-1, -1])
-        self.type = "Queen"
+        self.type = "King"
 
     def get_moves(self, board):
         # Straight Moves
