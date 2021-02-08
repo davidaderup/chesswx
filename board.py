@@ -53,9 +53,22 @@ class Board:
                 return piece
         raise ValueError("No piece can be found at the position.")
 
-    def get_binary_map_of_moves(self, piece):
-        board_mat = np.zeros(self.board_size)
+    def get_binary_map_of_moves_for_piece(self, piece):
         moves = piece.get_moves(self)
+        board_mat = self.get_binary_map_from_positions(moves)
+        return board_mat
+
+    def get_guarded_positions(self, owner):
+        guarded_positions = []
+        for piece in self.current_board_state:
+            if piece.owner == owner:
+                moves = piece.get_moves(self)
+                guarded_positions.extend(moves)
+        guarded_positions = np.unique(guarded_positions, axis=0)
+        return guarded_positions
+
+    def get_binary_map_from_positions(self, moves):
+        board_mat = np.zeros(self.board_size)
         for move in moves:
             board_mat[move[0], move[1]] = 1
         return board_mat
