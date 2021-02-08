@@ -11,71 +11,26 @@ class Rook(Piece):
 
     def get_moves(self, board):
         moves = []
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        direction_ind = -1
 
-        # Get horizontal moves
-        position_ind = self.position[0]
-        while position_ind + 1 < board.board_size[0]:
-            position_ind += 1
-            if position_ind == self.position[0]:
+        while direction_ind + 1 < len(directions):
+            direction_ind += 1
+            direction = np.array(directions[direction_ind])
+
+            new_position = self.position + direction
+            new_position = new_position.astype(int)
+            if board.is_out_of_bounds(new_position):
                 continue
-            new_position = np.array([position_ind, self.position[1]])
             if board.is_occupied(new_position):
-                blocking_piece = board.get_piece_by_position(new_position)
-                if blocking_piece.owner == self.owner:
-                    break
-                else:
+                occupying_piece = board.get_piece_by_position(new_position)
+                if occupying_piece.owner != self.owner:
                     moves.append(new_position)
-                    break
-            moves.append(new_position)
-
-        position_ind = self.position[0]
-        while position_ind - 1 >= 0:
-            position_ind -= 1
-            if position_ind == self.position[0]:
                 continue
-            new_position = np.array([position_ind, self.position[1]])
-            if board.is_occupied(new_position):
-                blocking_piece = board.get_piece_by_position(new_position)
-                if blocking_piece.owner == self.owner:
-                    break
-                else:
-                    moves.append(new_position)
-                    break
-            moves.append(new_position)
-
-
-        # Get vertical moves
-        position_ind = self.position[1]
-        while position_ind + 1 < board.board_size[1]:
-            position_ind += 1
-            if position_ind == self.position[1]:
-                continue
-            new_position = np.array([self.position[0], position_ind])
-
-            if board.is_occupied(new_position):
-                blocking_piece = board.get_piece_by_position(new_position)
-                if blocking_piece.owner == self.owner:
-                    break
-                else:
-                    moves.append(new_position)
-                    break
-            moves.append(new_position)
-
-        position_ind = self.position[1]
-        while position_ind - 1 >= 0:
-            position_ind -= 1
-            if position_ind == self.position[1]:
-                continue
-            new_position = np.array([self.position[0], position_ind])
-            if board.is_occupied(new_position):
-                blocking_piece = board.get_piece_by_position(new_position)
-                if blocking_piece.owner == self.owner:
-                    break
-                else:
-                    moves.append(new_position)
-                    break
-            moves.append(new_position)
-
+            else:
+                moves.append(new_position)
+                incremental_step = direction / np.abs(direction.sum())
+                directions.append(direction + incremental_step)
         return moves
 
     def move_to_position(self, position):

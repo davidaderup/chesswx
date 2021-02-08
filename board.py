@@ -38,7 +38,7 @@ class Board:
     def __str__(self):
         board_mat = np.zeros(self.board_size)
         for piece in self.current_board_state:
-            board_mat[piece.position] = piece.id
+            board_mat[piece.position[0], piece.position[1]] = piece.id
         return str(board_mat)
 
     def get_piece_by_id(self, piece_id):
