@@ -72,3 +72,17 @@ class Board:
         for move in moves:
             board_mat[move[0], move[1]] = 1
         return board_mat
+
+    @staticmethod
+    def get_positions_from_binary_map(binary_map):
+        positions_x, positions_y = np.nonzero(binary_map)
+        positions = [np.array([position_x, position_y]) for position_x, position_y in zip(positions_x, positions_y)]
+        return positions
+
+    @staticmethod
+    def get_opponent(owner):
+        if owner == "Black":
+            return "White"
+        else:
+            return "Black"
+
