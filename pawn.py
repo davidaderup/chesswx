@@ -35,9 +35,10 @@ class Pawn(Piece):
             if not board.is_occupied(self.position + normal_direction):
                 directions.append(normal_direction)
             # Starting position movement
-            starting_direction = np.array([-2, 0])
-            if not board.is_occupied(self.position + starting_direction):
-                directions.append(starting_direction)
+            if self.position[0] == 7:
+                starting_direction = np.array([-2, 0])
+                if not board.is_occupied(self.position + starting_direction):
+                    directions.append(starting_direction)
             # Capture moves
             capture_directions = [np.array([-1, 1]), np.array([-1, -1])]
             for capture_direction in capture_directions:

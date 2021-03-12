@@ -86,3 +86,22 @@ class Board:
         else:
             return "Black"
 
+    def remove_piece_from_board(self, piece_to_remove):
+        for piece_ind, piece in enumerate(self.current_board_state):
+            if piece.id == piece_to_remove.id:
+                self.board_states.append(deepcopy(self.current_board_state))
+                self.current_board_state = self.current_board_state
+                self.current_board_state.pop(piece_ind)
+                return
+        raise ValueError(f"Piece with info {piece_to_remove} could not be found on board.")
+
+    def move_piece(self, piece, position):
+        if self.is_occupied(position=position):
+            occupying_piece = self.get_piece_by_position(position=position)
+            if piece.owner == occupying_piece.owner:
+                raise ValueError(f"Position is already occupied by a {piece.owner} piece.")
+            else:
+                self.remove_piece_from_board(occupying_piece)
+                piece.move_to_position(position=position)
+
+
