@@ -11,42 +11,31 @@ class Pawn(Piece):
 
     def get_moves(self, board):
         directions = []
+
         if self.owner == "White":
-            # Normal movement
-            normal_direction = np.array([1, 0])
-            if not board.is_occupied(self.position + normal_direction):
-                directions.append(normal_direction)
-            # Starting position condition
-            if self.position[0] == 1:
-                starting_direction = np.array([2, 0])
-                if not board.is_occupied(self.position + starting_direction):
-                    directions.append(starting_direction)
-            # Capture moves
-            capture_directions = [np.array([1, 1]), np.array([1, -1])]
-            for capture_direction in capture_directions:
-                capture_position = self.position + capture_direction
-                if board.is_occupied(capture_position):
-                    occupying_piece = board.get_piece_by_position(position=capture_position)
-                    if occupying_piece.owner == board.get_opponent(self.owner):
-                        directions.append(capture_direction)
+            moving_direction = 1
+            start_position = 1
         else:
-            # Normal movement
-            normal_direction = np.array([-1, 0])
-            if not board.is_occupied(self.position + normal_direction):
-                directions.append(normal_direction)
-            # Starting position movement
-            if self.position[0] == 7:
-                starting_direction = np.array([-2, 0])
-                if not board.is_occupied(self.position + starting_direction):
-                    directions.append(starting_direction)
-            # Capture moves
-            capture_directions = [np.array([-1, 1]), np.array([-1, -1])]
-            for capture_direction in capture_directions:
-                capture_position = self.position + capture_direction
-                if board.is_occupied(capture_position):
-                    occupying_piece = board.get_piece_by_position(position=capture_position)
-                    if occupying_piece.owner == board.get_opponent(self.owner):
-                        directions.append(capture_direction)
+            moving_direction = -1
+            start_position = 6
+
+        # Normal movement
+        normal_direction = np.array([moving_direction * 1, 0])
+        if not board.is_occupied(self.position + normal_direction):
+            directions.append(normal_direction)
+        # Starting position condition
+        if self.position[0] == start_position:
+            starting_direction = np.array([moving_direction * 2, 0])
+            if not board.is_occupied(self.position + starting_direction):
+                directions.append(starting_direction)
+        # Capture moves
+        capture_directions = [np.array([moving_direction * 1, 1]), np.array([moving_direction * 1, -1])]
+        for capture_direction in capture_directions:
+            capture_position = self.position + capture_direction
+            if board.is_occupied(capture_position):
+                occupying_piece = board.get_piece_by_position(position=capture_position)
+                if occupying_piece.owner == board.get_opponent(self.owner):
+                    directions.append(capture_direction)
 
         moves = np.add(self.position, directions)
         return moves
