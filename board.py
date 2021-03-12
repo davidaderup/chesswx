@@ -103,5 +103,16 @@ class Board:
             else:
                 self.remove_piece_from_board(occupying_piece)
                 piece.move_to_position(position=position)
+        else:
+            piece.move_to_position(position=position)
+
+    def is_check(self, owner):
+        guarded_positions = self.get_guarded_positions(owner=owner)
+        opponent = self.get_opponent(owner=owner)
+        for piece in self.current_board_state:
+            if piece.owner == opponent and piece.type == "King":
+                for guarded_position in guarded_positions:
+                    if all(piece.position == guarded_position):
+                        print(f"{owner} checked {opponent}s king!")
 
 

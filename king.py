@@ -24,8 +24,6 @@ class King(Piece):
                                                            incremental_sum=2)
         moves.extend(diag_moves)
 
-
-
         opponent = board.get_opponent(self.owner)
         guarded_positions = board.get_guarded_positions(opponent)
 
