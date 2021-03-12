@@ -96,6 +96,12 @@ class Board:
         raise ValueError(f"Piece with info {piece_to_remove} could not be found on board.")
 
     def move_piece(self, piece, position):
+
+        possible_moves = piece.get_moves(board=self)
+        valid_move = any([np.allclose(possible_move, position) for possible_move in possible_moves])
+        if not valid_move:
+            raise ValueError(f"{position} is not a possible move for piece {piece}")
+
         if self.is_occupied(position=position):
             occupying_piece = self.get_piece_by_position(position=position)
             if piece.owner == occupying_piece.owner:
@@ -114,5 +120,3 @@ class Board:
                 for guarded_position in guarded_positions:
                     if all(piece.position == guarded_position):
                         print(f"{owner} checked {opponent}s king!")
-
-
