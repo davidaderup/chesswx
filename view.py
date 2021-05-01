@@ -24,7 +24,20 @@ app = wx.App()
 
 frame = wx.Frame(None, size=(30 * 8, 30 * 9),  title="Test Test 123")
 
-create_board(frame, (30, 30))
+grid_sizer = wx.GridSizer(rows=2, cols=1, hgap=0, vgap=0)
+
+test_panel = wx.Panel(frame, pos=(0,0), size=(30, 30))
+
+test_panel.SetBackgroundColour("black")
+
+
+test_panel_2 = wx.Panel(frame, pos=(0,30), size=(30, 30))
+test_panel_2.SetBackgroundColour("white")
+
+grid_sizer.Add(test_panel, 1, wx.EXPAND)
+grid_sizer.Add(test_panel_2, 1, wx.EXPAND)
+frame.SetSizer(sizer=grid_sizer)
+#create_board(frame, (30, 30))
 
 frame.Show()
 
